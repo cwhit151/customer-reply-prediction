@@ -240,6 +240,64 @@ with tab1:
         ]
     }
 
+# ============================================
+# TAILORED SUGGESTIONS BASED ON INPUT FEATURES
+# ============================================
+
+suggestions = []
+
+# --- EMAIL ENGAGEMENT ---
+if emails_opened_last_30d < 5:
+    suggestions.append("Increase email engagement by sending more personalized or value-driven messages.")
+if emails_clicked_last_30d == 0:
+    suggestions.append("Include clearer calls-to-action to encourage customers to click through emails.")
+if emails_sent_last_30d < 5:
+    suggestions.append("Increase outreach frequency, but keep messages relevant and concise.")
+
+# --- CUSTOMER STATUS / RELATIONSHIP ---
+if is_current_customer == 0:
+    suggestions.append("Strengthen onboarding flows and early touchpoints to build trust with new leads.")
+else:
+    if tenure_months < 6:
+        suggestions.append("Newer customers often need reassurance—schedule a check-in call or product demo.")
+    elif tenure_months > 24:
+        suggestions.append("Long-term customers benefit from loyalty incentives or upgraded feature highlights.")
+
+# --- SUPPORT TICKETS ---
+if total_tickets_last_6mo > 5:
+    suggestions.append("Reduce churn risk by addressing recurring support issues and closing unresolved tickets.")
+elif total_tickets_last_6mo == 0:
+    suggestions.append("Proactively check in to ensure the customer is not experiencing hidden issues.")
+
+# --- RESPONSE TIME ---
+if avg_response_time_hours > 24:
+    suggestions.append("Improve response time to increase customer satisfaction and perceived support quality.")
+
+# --- POSITIVE REPLIES ---
+if past_positive_replies == 0:
+    suggestions.append("Encourage two-way communication by asking simple, low-friction questions in outreach.")
+
+# --- LAST INTERACTION ---
+if last_interaction_days_ago > 20:
+    suggestions.append("Reconnect with the customer via a personalized message or special offer to re-engage.")
+
+# --- TAG INDICATORS ---
+if tag_high_priority == 1:
+    suggestions.append("Since this is a high-priority customer, consider assigning a dedicated success rep.")
+if tag_new_lead == 1:
+    suggestions.append("New leads respond well to short, value-focused messages and social proof.")
+
+# Ensure there is always at least one suggestion
+if len(suggestions) == 0:
+    suggestions.append("Maintain consistent communication and continue providing value-driven updates.")
+
+# Display the suggestions
+st.markdown("<h3 style='margin-top:25px;'>💡 Tailored Recommendations</h3>", unsafe_allow_html=True)
+
+for tip in suggestions:
+    st.markdown(f"- {tip}")
+
+    
     # --------------------------------------
     # SINGLE CENTERED PREDICT BUTTON
     # --------------------------------------
@@ -371,63 +429,6 @@ with tab1:
         with st.expander("📦 Raw Model Response"):
             st.json(result)
 
-
-# ============================================
-# TAILORED SUGGESTIONS BASED ON INPUT FEATURES
-# ============================================
-
-suggestions = []
-
-# --- EMAIL ENGAGEMENT ---
-if emails_opened_last_30d < 5:
-    suggestions.append("Increase email engagement by sending more personalized or value-driven messages.")
-if emails_clicked_last_30d == 0:
-    suggestions.append("Include clearer calls-to-action to encourage customers to click through emails.")
-if emails_sent_last_30d < 5:
-    suggestions.append("Increase outreach frequency, but keep messages relevant and concise.")
-
-# --- CUSTOMER STATUS / RELATIONSHIP ---
-if is_current_customer == 0:
-    suggestions.append("Strengthen onboarding flows and early touchpoints to build trust with new leads.")
-else:
-    if tenure_months < 6:
-        suggestions.append("Newer customers often need reassurance—schedule a check-in call or product demo.")
-    elif tenure_months > 24:
-        suggestions.append("Long-term customers benefit from loyalty incentives or upgraded feature highlights.")
-
-# --- SUPPORT TICKETS ---
-if total_tickets_last_6mo > 5:
-    suggestions.append("Reduce churn risk by addressing recurring support issues and closing unresolved tickets.")
-elif total_tickets_last_6mo == 0:
-    suggestions.append("Proactively check in to ensure the customer is not experiencing hidden issues.")
-
-# --- RESPONSE TIME ---
-if avg_response_time_hours > 24:
-    suggestions.append("Improve response time to increase customer satisfaction and perceived support quality.")
-
-# --- POSITIVE REPLIES ---
-if past_positive_replies == 0:
-    suggestions.append("Encourage two-way communication by asking simple, low-friction questions in outreach.")
-
-# --- LAST INTERACTION ---
-if last_interaction_days_ago > 20:
-    suggestions.append("Reconnect with the customer via a personalized message or special offer to re-engage.")
-
-# --- TAG INDICATORS ---
-if tag_high_priority == 1:
-    suggestions.append("Since this is a high-priority customer, consider assigning a dedicated success rep.")
-if tag_new_lead == 1:
-    suggestions.append("New leads respond well to short, value-focused messages and social proof.")
-
-# Ensure there is always at least one suggestion
-if len(suggestions) == 0:
-    suggestions.append("Maintain consistent communication and continue providing value-driven updates.")
-
-# Display the suggestions
-st.markdown("<h3 style='margin-top:25px;'>💡 Tailored Recommendations</h3>", unsafe_allow_html=True)
-
-for tip in suggestions:
-    st.markdown(f"- {tip}")
 
 
 # ----------------------------------------------------
