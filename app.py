@@ -378,19 +378,64 @@ with tab1:
 with tab2:
     st.markdown(
         """
-    ## 📘 About This Model
-    This predictive model determines whether a customer is likely to **renew their contract**  
-    based on 16 behavioral & engagement features:
+    ## 📘 About This Application
 
-    - 📧 Email interactions  
-    - 👤 Customer status  
-    - 🏗️ Industry & company attributes  
-    - 🎟️ Support ticket history  
-    - 🔥 Lead priority indicators  
-    - ⏳ Tenure & last interaction  
+    This application is designed to **predict the likelihood that a customer will resign 
+    (not renew their services)** based on patterns observed in historical customer data.  
+    The goal is to help account managers identify **at-risk customers early** so the company
+    can take proactive steps to improve retention.
+
+    ### 🎯 Purpose of the Model
+    The model analyzes the behavioral and engagement features provided in the dataset and  
+    estimates the probability that a customer is likely to resign.  
+    By turning raw customer attributes into a measurable risk score, this tool supports:
+
+    - Early intervention strategies  
+    - Better resource allocation  
+    - Improved customer success management  
+    - Data-informed decision making  
+
+    ### 🧠 What Factors Influence Resignation?
+    The prediction is based on a combination of **16 customer attributes** that were shown
+    to correlate with retention outcomes. Some of the most influential factors include:
+
+    - **Email engagement** (opens, clicks, responses)  
+      > Low engagement often signals declining interest.  
+
+    - **Customer status & lifecycle stage**  
+      > Certain stages are historically more likely to churn.  
+
+    - **Company characteristics** (industry, size, type)  
+      > Some industries churn at higher or lower rates.  
+
+    - **Support ticket history**  
+      > Frequent issues or unresolved tickets can increase resignation likelihood.  
+
+    - **Lead scores / priority indicators**  
+      > High-priority leads often show stronger renewal behaviors.  
+
+    - **Tenure and time since last interaction**  
+      > Long gaps in communication frequently precede churn.  
+
+    These features are processed by the machine learning model to produce a personalized
+    resignation-likelihood score for each customer.
+
+    ### 🖥️ How To Use the Application
+    Using the tool is straightforward:
+
+    1. **Enter customer information** using the attributes on the left side of the page.  
+    2. Once all fields are filled, the model will automatically run a prediction.  
+    3. The output will display the customer’s **likelihood of resignation** as a percentage.  
+    4. Use this score to determine whether the customer may require additional support  
+       or targeted engagement.
+
+    The goal is not only to make accurate predictions, but also to make the insights
+    accessible and actionable for anyone — including those new to machine learning.
+
+    ---
     """,
         unsafe_allow_html=True,
-  )
+    )
 # -------------------------------
 # MINI GAME FOOTER (WORKING)
 # -------------------------------
