@@ -241,7 +241,7 @@ with tab1:
     }
 
 
-        # --------------------------------------
+    # --------------------------------------
     # SINGLE CENTERED PREDICT BUTTON
     # --------------------------------------
     st.markdown("<div class='predict-container'>", unsafe_allow_html=True)
@@ -338,64 +338,158 @@ with tab1:
         st.markdown(f"<p style='color:gray; font-size:14px;'>Confidence: <b>{confidence}</b></p>", unsafe_allow_html=True)
 
         # ============================================
-        # TAILORED SUGGESTIONS (AFTER PREDICTION)
-        # ============================================
+# ADVANCED SALES + MARKETING STRATEGY ENGINE
+# ============================================
 
-        suggestions = []
+suggestions = []
 
-        # EMAIL ENGAGEMENT
-        if emails_opened_last_30d < 5:
-            suggestions.append("Increase email engagement with more personalized subject lines or value-driven content.")
-        if emails_clicked_last_30d == 0:
-            suggestions.append("Add clearer calls-to-action to encourage email click-through.")
-        if emails_sent_last_30d < 5:
-            suggestions.append("Increase outreach frequency slightly while keeping messages concise.")
+# -------------------------------------------------
+# 1) INDUSTRY-SPECIFIC RECOMMENDATIONS
+# -------------------------------------------------
 
-        # CUSTOMER STATUS
-        if is_current_customer == 0:
-            suggestions.append("Build early trust with onboarding check-ins and quick value delivery.")
-        else:
-            if tenure_months < 6:
-                suggestions.append("Newer customers benefit from scheduled walkthroughs or product demos.")
-            elif tenure_months > 24:
-                suggestions.append("Reward long-term customers with loyalty perks or advanced feature highlights.")
+if industry == "Construction":
+    suggestions.append(
+        "Construction clients respond best to straightforward, problem-solving communication. "
+        "Use a StoryBrand-style message that focuses on reducing downtime, improving workflow, "
+        "and helping **their crews succeed on the jobsite**."
+    )
+    suggestions.append(
+        "Offer a short 'toolbox talk' style training video — educational content builds authority "
+        "and aligns with Chet Holmes' 'education-based marketing' strategy."
+    )
 
-        # SUPPORT TICKETS
-        if total_tickets_last_6mo > 5:
-            suggestions.append("Address recurring support issues to reduce frustration and improve satisfaction.")
-        elif total_tickets_last_6mo == 0:
-            suggestions.append("Proactively ask if the customer needs help—they may be silently struggling.")
+elif industry == "Healthcare":
+    suggestions.append(
+        "Healthcare clients value compliance, reliability, and patient-impact messaging. Frame your outreach "
+        "as helping them **protect patient outcomes and reduce operational risk**."
+    )
+    suggestions.append(
+        "According to Chet Holmes, becoming a 'trusted advisor' is essential. Send a short guide on "
+        "workflow efficiency or regulatory updates to build credibility."
+    )
 
-        # RESPONSE TIME
-        if avg_response_time_hours > 24:
-            suggestions.append("Improve response times to strengthen trust and perceived support quality.")
+elif industry == "Retail":
+    suggestions.append(
+        "Retail clients respond to messaging about driving customer engagement and increasing conversion rates. "
+        "Use StoryBrand principles to highlight how your solution boosts **sales speed and customer satisfaction**."
+    )
+    suggestions.append(
+        "Offer them a simple A/B test idea — retailers love quick-win experiments that drive revenue."
+    )
 
-        # POSITIVE REPLIES
-        if past_positive_replies == 0:
-            suggestions.append("Encourage small positive interactions by asking simple, low-effort questions.")
+elif industry == "Finance":
+    suggestions.append(
+        "Finance clients gravitate to risk reduction, automation, and compliance messaging. "
+        "Clarify your value proposition using StoryBrand's framework: **help them avoid errors, speed audits, and reduce risk**."
+    )
+    suggestions.append(
+        "Send a concise, numbers-driven ROI breakdown — decision-makers in finance prefer logic and metrics."
+    )
 
-        # LAST INTERACTION
-        if last_interaction_days_ago > 20:
-            suggestions.append("Re-engage with a personalized touchpoint, such as a custom offer or check-in message.")
+elif industry == "Tech":
+    suggestions.append(
+        "Tech clients appreciate speed, innovation, and efficiency. Position your offering as a way to help them "
+        "**scale faster with fewer bottlenecks**."
+    )
+    suggestions.append(
+        "Use social proof — Jeb Blount emphasizes using high-frequency, high-quality touches. Share a case study from a similar tech stack."
+    )
 
-        # TAGS
-        if tag_high_priority == 1:
-            suggestions.append("Assigning a dedicated success manager can boost retention for high-priority accounts.")
-        if tag_new_lead == 1:
-            suggestions.append("New leads respond best to short, value-dense messages and social proof.")
 
-        # Always show at least one suggestion
-        if not suggestions:
-            suggestions.append("Maintain consistent engagement and continue delivering value-focused updates.")
+# -------------------------------------------------
+# 2) BEHAVIOR-BASED SALES ACTIONS (from your features)
+# -------------------------------------------------
 
-        st.markdown("<h3 style='margin-top:25px;'>💡 Tailored Recommendations</h3>", unsafe_allow_html=True)
-        
-        for tip in suggestions:
-            st.markdown(f"- {tip}")
+# EMAIL BEHAVIOR
+if emails_sent_last_30d > 20 and emails_opened_last_30d < 5:
+    suggestions.append(
+        "High volume + low opens → the customer is overwhelmed. Reduce frequency temporarily and apply StoryBrand: "
+        "clarify the message so it focuses on THEIR survival and wins. Then follow with a personal call."
+    )
+elif emails_opened_last_30d < 3:
+    suggestions.append(
+        "Very low engagement. Use Jeb Blount’s multi-channel approach: add SMS or a short voicemail drop to break through."
+    )
 
-        # Raw JSON Viewer
-        with st.expander("📦 Raw Model Response"):
-            st.json(result)
+if emails_clicked_last_30d == 0 and emails_opened_last_30d > 10:
+    suggestions.append(
+        "They're opening emails but not acting. Apply 'The Ultimate Sales Machine': offer a free micro-education "
+        "resource (checklist, mini-guide) to create movement."
+    )
+
+# RELATIONSHIP STRENGTH
+if tenure_months < 4:
+    suggestions.append(
+        "Early-stage customer → follow Mike Weinberg’s principle: 'Own the sales story.' "
+        "Deliver a simple, confident message about how you help them achieve a specific win in the first 30 days."
+    )
+elif tenure_months > 24:
+    suggestions.append(
+        "Long-term customers respond extremely well to loyalty touches. Send a personalized thank-you + invite them "
+        "to an exclusive strategy call. Chet Holmes calls this the 'Dream 100 nurturing play.'"
+    )
+
+# SUPPORT TICKETS
+if total_tickets_last_6mo > 5:
+    suggestions.append(
+        "High ticket volume → Friction! Fix outstanding issues fast. Then follow with a value message reinforcing "
+        "how your support helps them avoid future headaches (StoryBrand: remove pain points)."
+    )
+
+# RESPONSE TIME
+if avg_response_time_hours > 24:
+    suggestions.append(
+        "Slow responses weaken trust. Improve response speed, then send a brief ‘we’re tightening support’ message. "
+        "Blount emphasizes responsiveness as a key competitive advantage."
+    )
+
+# LAST INTERACTION
+if last_interaction_days_ago > 20:
+    suggestions.append(
+        "Re-engage immediately using a **personalized video message**. Jeb Blount notes that video dramatically "
+        "improves reconnect rates because it adds warmth and credibility."
+    )
+
+# TAG-BASED ADVICE
+if tag_high_priority == 1:
+    suggestions.append(
+        "High-priority customer → Use a **Chet Holmes Dream 100** play: assign a top rep, schedule a proactive call, "
+        "and deliver an educational resource tailored to their role."
+    )
+if tag_new_lead == 1:
+    suggestions.append(
+        "New lead → follow StoryBrand: make THEM the hero. Present a simple plan to get their first quick win in 15 minutes."
+    )
+
+
+# -------------------------------------------------
+# 3) MODEL OUTPUT–BASED STRATEGY
+# -------------------------------------------------
+
+if local_prob < 40:
+    suggestions.append(
+        "Renewal likelihood is low — escalate to a senior rep and use a multi-channel cadence (email + call + SMS). "
+        "This aligns with Fanatical Prospecting’s 'balanced attack' strategy."
+    )
+elif 40 <= local_prob < 70:
+    suggestions.append(
+        "Medium likelihood — focus on delivering trust-building, education-based content (Chet Holmes) and reconnect "
+        "with a friendly, low-pressure outreach sequence."
+    )
+else:
+    suggestions.append(
+        "High likelihood — reinforce good momentum. Offer a personalized roadmap or optional upgrade conversation "
+        "to deepen the relationship."
+    )
+
+
+# -------------------------------------------------
+# DISPLAY SUGGESTIONS
+# -------------------------------------------------
+st.markdown("<h3 style='margin-top:25px;'>💡 Tailored Strategic Recommendations</h3>", unsafe_allow_html=True)
+
+for tip in suggestions:
+    st.markdown(f"- {tip}")
 
 # ----------------------------------------------------
 # TAB 2 — ABOUT THE MODEL
