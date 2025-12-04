@@ -240,65 +240,8 @@ with tab1:
         ]
     }
 
-# ============================================
-# TAILORED SUGGESTIONS BASED ON INPUT FEATURES
-# ============================================
 
-suggestions = []
-
-# --- EMAIL ENGAGEMENT ---
-if emails_opened_last_30d < 5:
-    suggestions.append("Increase email engagement by sending more personalized or value-driven messages.")
-if emails_clicked_last_30d == 0:
-    suggestions.append("Include clearer calls-to-action to encourage customers to click through emails.")
-if emails_sent_last_30d < 5:
-    suggestions.append("Increase outreach frequency, but keep messages relevant and concise.")
-
-# --- CUSTOMER STATUS / RELATIONSHIP ---
-if is_current_customer == 0:
-    suggestions.append("Strengthen onboarding flows and early touchpoints to build trust with new leads.")
-else:
-    if tenure_months < 6:
-        suggestions.append("Newer customers often need reassurance—schedule a check-in call or product demo.")
-    elif tenure_months > 24:
-        suggestions.append("Long-term customers benefit from loyalty incentives or upgraded feature highlights.")
-
-# --- SUPPORT TICKETS ---
-if total_tickets_last_6mo > 5:
-    suggestions.append("Reduce churn risk by addressing recurring support issues and closing unresolved tickets.")
-elif total_tickets_last_6mo == 0:
-    suggestions.append("Proactively check in to ensure the customer is not experiencing hidden issues.")
-
-# --- RESPONSE TIME ---
-if avg_response_time_hours > 24:
-    suggestions.append("Improve response time to increase customer satisfaction and perceived support quality.")
-
-# --- POSITIVE REPLIES ---
-if past_positive_replies == 0:
-    suggestions.append("Encourage two-way communication by asking simple, low-friction questions in outreach.")
-
-# --- LAST INTERACTION ---
-if last_interaction_days_ago > 20:
-    suggestions.append("Reconnect with the customer via a personalized message or special offer to re-engage.")
-
-# --- TAG INDICATORS ---
-if tag_high_priority == 1:
-    suggestions.append("Since this is a high-priority customer, consider assigning a dedicated success rep.")
-if tag_new_lead == 1:
-    suggestions.append("New leads respond well to short, value-focused messages and social proof.")
-
-# Ensure there is always at least one suggestion
-if len(suggestions) == 0:
-    suggestions.append("Maintain consistent communication and continue providing value-driven updates.")
-
-# Display the suggestions
-st.markdown("<h3 style='margin-top:25px;'>💡 Tailored Recommendations</h3>", unsafe_allow_html=True)
-
-for tip in suggestions:
-    st.markdown(f"- {tip}")
-
-    
-    # --------------------------------------
+        # --------------------------------------
     # SINGLE CENTERED PREDICT BUTTON
     # --------------------------------------
     st.markdown("<div class='predict-container'>", unsafe_allow_html=True)
@@ -312,24 +255,17 @@ for tip in suggestions:
 
         # Loader
         loader_placeholder = st.empty()
-        loader_placeholder.markdown(
-            "<div class='loader'></div>", unsafe_allow_html=True
-        )
+        loader_placeholder.markdown("<div class='loader'></div>", unsafe_allow_html=True)
         time.sleep(1.2)
 
         # Call Databricks endpoint
         try:
-            response = requests.post(
-                ENDPOINT_URL, headers=headers, json=payload
-            )
+            response = requests.post(ENDPOINT_URL, headers=headers, json=payload)
             response.raise_for_status()
             result = response.json()
         except Exception as e:
             loader_placeholder.empty()
-            st.markdown(
-                '<div class="result-card error-card">❌ Error calling prediction API.</div>',
-                unsafe_allow_html=True,
-            )
+            st.markdown('<div class="result-card error-card">❌ Error calling prediction API.</div>', unsafe_allow_html=True)
             st.exception(e)
             st.stop()
 
@@ -339,76 +275,55 @@ for tip in suggestions:
         try:
             pred = result["predictions"][0]
         except Exception:
-            st.markdown(
-                '<div class="result-card error-card">❌ Error reading prediction.</div>',
-                unsafe_allow_html=True,
-            )
+            st.markdown('<div class="result-card error-card">❌ Error reading prediction.</div>', unsafe_allow_html=True)
             st.json(result)
             st.stop()
 
         # Summary card
         st.markdown(
             f"""
-        <div class="glass-card">
-            <h3>📄 Customer Summary</h3>
-            Industry: <b>{industry}</b><br>
-            Region: <b>{region}</b><br>
-            Channel: <b>{channel}</b><br>
-            Company size: <b>{company_size}</b><br>
-            Tenure: <b>{tenure_months} months</b><br>
-            Last interaction: <b>{last_interaction_days_ago} days</b><br>
-        </div>
-        """,
+            <div class="glass-card">
+                <h3>📄 Customer Summary</h3>
+                Industry: <b>{industry}</b><br>
+                Region: <b>{region}</b><br>
+                Channel: <b>{channel}</b><br>
+                Company size: <b>{company_size}</b><br>
+                Tenure: <b>{tenure_months} months</b><br>
+                Last interaction: <b>{last_interaction_days_ago} days</b><br>
+            </div>
+            """,
             unsafe_allow_html=True,
         )
 
         # Compute LOCAL probability
-        local_prob = calculate_local_probability(
-            {
-                "is_current_customer": is_current_customer,
-                "tenure_months": tenure_months,
-                "emails_opened_last_30d": emails_opened_last_30d,
-                "past_positive_replies": past_positive_replies,
-                "tag_high_priority": tag_high_priority,
-                "avg_response_time_hours": avg_response_time_hours,
-                "last_interaction_days_ago": last_interaction_days_ago,
-                "total_tickets_last_6mo": total_tickets_last_6mo,
-            }
-        )
+        local_prob = calculate_local_probability({
+            "is_current_customer": is_current_customer,
+            "tenure_months": tenure_months,
+            "emails_opened_last_30d": emails_opened_last_30d,
+            "past_positive_replies": past_positive_replies,
+            "tag_high_priority": tag_high_priority,
+            "avg_response_time_hours": avg_response_time_hours,
+            "last_interaction_days_ago": last_interaction_days_ago,
+            "total_tickets_last_6mo": total_tickets_last_6mo,
+        })
 
-        # SUCCESS / FAILURE message
+        # Success / Failure message
         if pred == 1:
             st.balloons()
-            st.markdown(
-                '<div class="result-card success-card">🔥 YES! This customer is LIKELY to renew.</div>',
-                unsafe_allow_html=True,
-            )
+            st.markdown('<div class="result-card success-card">🔥 YES! This customer is LIKELY to renew.</div>', unsafe_allow_html=True)
         else:
-            st.markdown(
-                '<div class="result-card error-card">⚠️ No — Customer is UNLIKELY to renew.</div>',
-                unsafe_allow_html=True,
-            )
+            st.markdown('<div class="result-card error-card">⚠️ No — Customer is UNLIKELY to renew.</div>', unsafe_allow_html=True)
 
         # Probability bar
         st.markdown(
             f"""
-        <div style='margin-top:20px;'>
-            <h4 style='color:#ff4b4b;'>Renewal Likelihood: {local_prob}%</h4>
-            <div style="
-                width:100%;
-                background-color:#222;
-                border-radius:8px;
-                height:18px;
-                margin-top:8px;">
-                <div style="
-                    width:{local_prob}%;
-                    background:linear-gradient(90deg,#ff4b4b,#ff7777);
-                    height:18px;
-                    border-radius:8px;">
+            <div style='margin-top:20px;'>
+                <h4 style='color:#ff4b4b;'>Renewal Likelihood: {local_prob}%</h4>
+                <div style="width:100%; background-color:#222; border-radius:8px; height:18px; margin-top:8px;">
+                    <div style="width:{local_prob}%; background:linear-gradient(90deg,#ff4b4b,#ff7777); height:18px; border-radius:8px;"></div>
                 </div>
             </div>
-        </div>
-        """,
+            """,
             unsafe_allow_html=True,
         )
 
@@ -420,16 +335,67 @@ for tip in suggestions:
         else:
             confidence = "Low Confidence"
 
-        st.markdown(
-            f"<p style='color:gray; font-size:14px;'>Confidence: <b>{confidence}</b></p>",
-            unsafe_allow_html=True,
-        )
+        st.markdown(f"<p style='color:gray; font-size:14px;'>Confidence: <b>{confidence}</b></p>", unsafe_allow_html=True)
+
+        # ============================================
+        # TAILORED SUGGESTIONS (AFTER PREDICTION)
+        # ============================================
+
+        suggestions = []
+
+        # EMAIL ENGAGEMENT
+        if emails_opened_last_30d < 5:
+            suggestions.append("Increase email engagement with more personalized subject lines or value-driven content.")
+        if emails_clicked_last_30d == 0:
+            suggestions.append("Add clearer calls-to-action to encourage email click-through.")
+        if emails_sent_last_30d < 5:
+            suggestions.append("Increase outreach frequency slightly while keeping messages concise.")
+
+        # CUSTOMER STATUS
+        if is_current_customer == 0:
+            suggestions.append("Build early trust with onboarding check-ins and quick value delivery.")
+        else:
+            if tenure_months < 6:
+                suggestions.append("Newer customers benefit from scheduled walkthroughs or product demos.")
+            elif tenure_months > 24:
+                suggestions.append("Reward long-term customers with loyalty perks or advanced feature highlights.")
+
+        # SUPPORT TICKETS
+        if total_tickets_last_6mo > 5:
+            suggestions.append("Address recurring support issues to reduce frustration and improve satisfaction.")
+        elif total_tickets_last_6mo == 0:
+            suggestions.append("Proactively ask if the customer needs help—they may be silently struggling.")
+
+        # RESPONSE TIME
+        if avg_response_time_hours > 24:
+            suggestions.append("Improve response times to strengthen trust and perceived support quality.")
+
+        # POSITIVE REPLIES
+        if past_positive_replies == 0:
+            suggestions.append("Encourage small positive interactions by asking simple, low-effort questions.")
+
+        # LAST INTERACTION
+        if last_interaction_days_ago > 20:
+            suggestions.append("Re-engage with a personalized touchpoint, such as a custom offer or check-in message.")
+
+        # TAGS
+        if tag_high_priority == 1:
+            suggestions.append("Assigning a dedicated success manager can boost retention for high-priority accounts.")
+        if tag_new_lead == 1:
+            suggestions.append("New leads respond best to short, value-dense messages and social proof.")
+
+        # Always show at least one suggestion
+        if not suggestions:
+            suggestions.append("Maintain consistent engagement and continue delivering value-focused updates.")
+
+        st.markdown("<h3 style='margin-top:25px;'>💡 Tailored Recommendations</h3>", unsafe_allow_html=True)
+        
+        for tip in suggestions:
+            st.markdown(f"- {tip}")
 
         # Raw JSON Viewer
         with st.expander("📦 Raw Model Response"):
             st.json(result)
-
-
 
 # ----------------------------------------------------
 # TAB 2 — ABOUT THE MODEL
