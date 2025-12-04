@@ -451,6 +451,96 @@ with tab1:
         # Raw JSON Viewer
         with st.expander("📦 Raw Model Response"):
             st.json(result)
+with tab2:
+    st.markdown(
+        """
+    ## 📘 About This Application
+
+    This application is designed to **predict the likelihood that a customer will renew or resign their services**  
+    using patterns learned from historical customer behavior.  
+    By transforming real engagement data into a measurable score, the model helps account managers  
+    identify **at-risk customers early** and take smarter, targeted action.
+
+    ---
+
+    ## 🎯 Purpose of the Model
+    The goal of this model is to support customer success teams by:
+
+    - Highlighting customers who may require additional support  
+    - Identifying early warning signs of disengagement  
+    - Helping allocate resources to customers with the highest impact  
+    - Providing data-informed recommendations to improve retention  
+
+    The model evaluates each customer’s behavioral trends and engagement history  
+    to generate a personalized renewal probability.
+
+    ---
+
+    ## 🧠 Key Factors That Influence Renewal Likelihood
+
+    The prediction is based on the following features — each representing a measurable aspect of customer health:
+
+    ### **Customer Profile & Status**
+    - **Industry** — Some industries show stronger renewal behavior than others.  
+    - **Region** — Regional differences can affect communication responsiveness.  
+    - **Company Size** — Engagement patterns differ between small, mid-sized, and enterprise clients.  
+    - **Current customer?** — Existing customers with longer tenure typically renew at higher rates.  
+    - **Tenure (months)** — Longer tenure often correlates with stronger customer loyalty.
+
+    ### **Engagement & Communication**
+    - **Emails sent (30 days)** — Indicates frequency of outreach.  
+    - **Emails opened (30 days)** — Strong indicator of customer interest.  
+    - **Emails clicked (30 days)** — Measures deep engagement with content.  
+    - **Past positive replies** — Shows historical responsiveness and satisfaction.  
+    - **Days since last interaction** — Long silences are a major churn indicator.
+
+    ### **Support & Experience**
+    - **Tickets (last 6 months)** — High support volume can signal friction or frustration.  
+    - **Avg response time (hours)** — Slow support responses negatively impact retention.
+
+    ### **Lead & Priority Indicators**
+    - **High priority tag?** — High-value accounts may receive additional attention.  
+    - **New lead tag?** — Early-stage customers often need fast wins to build trust.
+
+    All these inputs are combined to produce a renewal likelihood score on a 0–100% scale.
+
+    ---
+
+    ## 🖥️ How to Use This Application
+
+    1. **Enter customer information** using the input panel on the left-hand side.  
+    2. Click the **Predict** button to generate the model's renewal likelihood.  
+    3. Review the:
+       - **Customer Summary**  
+       - **Renewal Likelihood Score**  
+       - **Confidence Level**  
+       - **Tailored Strategic Recommendations** (based on marketing + sales best practices)
+
+    4. Apply the insights to decide whether the customer needs additional engagement, support attention,  
+       or strategic communication.
+
+    This tool is built to make machine learning **practical, understandable, and actionable**  
+    for real-world customer success work.
+
+    ---
+
+    ## 🎮 Mini Jump Game — How to Play
+
+    As a fun bonus to keep the experience engaging, the app includes a mini jump game:
+
+    - Click the **Open Game** dropdown to reveal the game window.  
+    - Click inside the game box to activate controls.  
+    - Press the **spacebar** to make the snail jump.  
+    - Jump over 10 obstacles to win!  
+    - You have a limited number of lives — lose them all and the game ends.  
+    - Refresh the page to restart the game at any time.
+
+    This mini-game is simply an enjoyable, interactive break between predictions. 🐌🚗💨
+
+    ---
+    """,
+        unsafe_allow_html=True,
+    )
 
 # -------------------------------
 # MINI GAME FOOTER (WORKING)
@@ -638,6 +728,8 @@ startGame();
 </body>
 </html>
 """
+
+
 
 # ================================
 # FOOTER GAME (DISCREET VERSION)
