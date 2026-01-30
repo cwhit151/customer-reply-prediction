@@ -9,7 +9,7 @@ st.set_page_config(layout="wide")
 ENDPOINT_URL = "https://dbc-624143a1-5376.cloud.databricks.com/serving-endpoints/Final_Project/invocations"
 
 # Databricks personal access token
-DATABRICKS_TOKEN = "dapi45371813e4f6417e35e5b0c510aa2250"
+DATABRICKS_TOKEN = "dapi..."
 
 headers = {
     "Authorization": f"Bearer {DATABRICKS_TOKEN}",
